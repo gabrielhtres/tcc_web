@@ -1,11 +1,11 @@
-import MainLayout from "@/components/MainLayout";
-import Menu from "@/components/Menu";
+'use client';
 
-export default function Home() {
-	return (
-		<main className="flex flex-row min-h-screen min-w-max">
-			<Menu />
-			<MainLayout />
-		</main>
-	);
+import Scale from "./scale/page";
+import SignIn from "./signin/page";
+
+export default function Home(props: any) {
+	console.log(props)
+	const token = 'ta';//window.localStorage.getItem("token") as string;
+
+	return token ? <Scale /> : <SignIn />;
 }

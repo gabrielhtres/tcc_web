@@ -1,15 +1,15 @@
 "use client";
 
 import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
-import { faBackwardStep } from "@fortawesome/free-solid-svg-icons/faBackwardStep";
+// import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
+// import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
+// import { faBackwardStep } from "@fortawesome/free-solid-svg-icons/faBackwardStep";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
-import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
+// import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, IconButton, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, useTheme } from "@mui/material";
-import { useState } from "react";
+import { Box, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, } from "@mui/material";
+// import { useState } from "react";
 import Header from "./Header";
 
 // interface TablePaginationActionsProps {
@@ -106,7 +106,6 @@ export default function MainLayout() {
 
 	return (
 		<Box className="w-full bg-gray-200">
-			<Header />
 			<Box className="flex justify-center items-center p-8 w-full bg-opacity-30">
 				<TableContainer className="bg-white rounded-lg">
 					<Table /*className="rounded-3xl"*/>

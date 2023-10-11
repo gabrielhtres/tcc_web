@@ -12,7 +12,7 @@ import Logo from "../assets/logo.svg";
 
 export default function Menu() {
 	return (
-		<Box className="flex flex-col justify-top items-center h-screen bg-secondary max-w-lg w-64 text-primary">
+		<Box className="flex flex-col justify-top items-center h-screen bg-secondary text-primary w-1/5">
 			<Image src={Logo} alt="GreenVision" className="w-full p-4" />
 			<List className="w-full p-0">
 				<ListItem className="w-full p-0 bg-tertiary">
