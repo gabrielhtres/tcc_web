@@ -1,11 +1,10 @@
 'use client';
 
-import Scale from "./scale/page";
-import SignIn from "./signin/page";
+import Scale from './scale/[id]/page';
+import SignIn from './signin/page';
 
-export default function Home(props: any) {
-	console.log(props)
-	const token = 'ta';//window.localStorage.getItem("token") as string;
+export default function Home() {
+  const token = 'ta'; //window.localStorage.getItem("token") as string;
 
-	return token ? <Scale /> : <SignIn />;
+  return token ? <Scale /> : <SignIn />;
 }

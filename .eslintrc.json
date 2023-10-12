@@ -6,7 +6,9 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "prettier",
+    "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -16,14 +18,16 @@
   "plugins": [
     "@typescript-eslint",
     "react",
-    "next/eslint-plugin-next",
-    "prettier-plugin-tailwindcss"
+    "eslint-plugin-import-helpers",
+    "prettier"
+    // "next/eslint-plugin-next"
+    // "prettier-plugin-tailwindcss"
   ],
   "rules": {
-    "indent": ["error", "tab"],
-    "linebreak-style": ["error", "windows"],
-    "quotes": ["error", "double"],
-    "semi": ["error", "always"],
+    // "indent": ["error", "tab"],
+    // "linebreak-style": ["error", "windows"],
+    // // "quotes": ["error", "double"],
+    // "semi": ["error", "always"],
     "react/react-in-jsx-scope": "off",
     "react/jsx-uses-react": "off"
   }

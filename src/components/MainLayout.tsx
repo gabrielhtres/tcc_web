@@ -1,16 +1,25 @@
-"use client";
+'use client';
 
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faList } from '@fortawesome/free-solid-svg-icons';
 // import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 // import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
 // import { faBackwardStep } from "@fortawesome/free-solid-svg-icons/faBackwardStep";
-import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
+import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit';
 // import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
-import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Box, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, } from "@mui/material";
+import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  Box,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
 // import { useState } from "react";
-import Header from "./Header";
+// import Header from "./Header";
 
 // interface TablePaginationActionsProps {
 //   count: number;
@@ -79,66 +88,86 @@ import Header from "./Header";
 // }
 
 export default function MainLayout() {
-	// const [page, setPage] = useState(0);
-	// const [rowsPerPage, setRowsPerPage] = useState(5);
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = useState(5);
 
-	const rows = [
-		{ id: 1, name: "Escala 1" },
-		{ id: 2, name: "Escala 2" }
-	];
+  const rows = [
+    { id: 1, name: 'Escala 1' },
+    { id: 2, name: 'Escala 2' },
+  ];
 
-	// Avoid a layout jump when reaching the last page with empty rows.
-	// const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  // Avoid a layout jump when reaching the last page with empty rows.
+  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-	// const handleChangePage = (
-	// 	event: React.MouseEvent<HTMLButtonElement> | null,
-	// 	newPage: number,
-	// ) => {
-	// 	setPage(newPage);
-	// };
+  // const handleChangePage = (
+  // 	event: React.MouseEvent<HTMLButtonElement> | null,
+  // 	newPage: number,
+  // ) => {
+  // 	setPage(newPage);
+  // };
 
-	// const handleChangeRowsPerPage = (
-	// 	event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	// ) => {
-	// 	setRowsPerPage(parseInt(event.target.value, 10));
-	// 	setPage(0);
-	// };
+  // const handleChangeRowsPerPage = (
+  // 	event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  // ) => {
+  // 	setRowsPerPage(parseInt(event.target.value, 10));
+  // 	setPage(0);
+  // };
 
-	return (
-		<Box className="w-full bg-gray-200">
-			<Box className="flex justify-center items-center p-8 w-full bg-opacity-30">
-				<TableContainer className="bg-white rounded-lg">
-					<Table /*className="rounded-3xl"*/>
-						<TableHead>
-							<TableRow>
-								<TableCell className="w-8.5/10 py-2">Escala</TableCell>
-								<TableCell className="text-center py-2">Ações</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{rows.map((row) => (
-								<TableRow key={row.id}>
-									<TableCell size="small">
-										{row.name}
-									</TableCell>
-									<TableCell size="small">
-										<Box className="w-full flex justify-around">
-											<IconButton>
-												<FontAwesomeIcon size="sm" color="blue" icon={faEye} />
-											</IconButton>
-											<IconButton>
-												<FontAwesomeIcon size="sm" color="orange" icon={faEdit} /> 
-											</IconButton> 
-											<IconButton> 
-												<FontAwesomeIcon size="sm" color="red" icon={faTrash} /> 
-											</IconButton>
-										</Box>
-										
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-						{/* <TableFooter>
+  return (
+    // <Box className="w-full bg-gray-200">
+    // 	<Box className="flex justify-center items-center p-8 w-full bg-opacity-30">
+    <TableContainer className="bg-white rounded-lg">
+      <Table /*className="rounded-3xl"*/>
+        <TableHead>
+          <TableRow>
+            <TableCell className="w-8.5/10 py-2 font-semibold">
+              Escala
+            </TableCell>
+            <TableCell className="text-center py-2 font-semibold">
+              Ações
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map(row => (
+            <TableRow key={row.id}>
+              <TableCell size="small">{row.name}</TableCell>
+              <TableCell size="small">
+                <Box className="w-full flex justify-around">
+                  <IconButton>
+                    <FontAwesomeIcon
+                      size="sm"
+                      color="#3CB371"
+                      icon={faList}
+                    />
+                  </IconButton>
+                  <IconButton>
+                    <FontAwesomeIcon
+                      size="sm"
+                      color="#4169E1"
+                      icon={faEye}
+                    />
+                  </IconButton>
+                  <IconButton>
+                    <FontAwesomeIcon
+                      size="sm"
+                      color="#FFA500"
+                      icon={faEdit}
+                    />
+                  </IconButton>
+                  <IconButton>
+                    <FontAwesomeIcon
+                      size="sm"
+                      color="#FF4500"
+                      icon={faTrash}
+                    />
+                  </IconButton>
+                </Box>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        {/* <TableFooter>
 							<TableRow>
 								<TablePagination 
 									rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
@@ -158,9 +187,9 @@ export default function MainLayout() {
 									ActionsComponent={TablePaginationActions}  />
 							</TableRow>
 						</TableFooter> */}
-					</Table>
-				</TableContainer>
-			</Box>
-		</Box>
-	);
+      </Table>
+    </TableContainer>
+    // 	</Box>
+    // </Box>
+  );
 }
