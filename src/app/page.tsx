@@ -1,10 +1,19 @@
-'use client';
+"use client";
 
-import Scale from './scale/[id]/page';
-import SignIn from './signin/page';
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
-  const token = 'ta'; //window.localStorage.getItem("token") as string;
+	const router = useRouter();
+	const token = false; //window.localStorage.getItem("token") as string;
 
-  return token ? <Scale /> : <SignIn />;
+	useEffect(() => {
+		if (token) {
+			router.replace("/scale");
+		} else {
+			router.replace("/signin");
+		}
+	}, []);
+
+	return <></>;
 }
