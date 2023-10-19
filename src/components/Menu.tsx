@@ -12,6 +12,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Image from "next/image";
 import Logo from "../assets/logo.svg";
 import Link from "next/link";
+import nookies from "nookies";
+import { useRouter } from "next/navigation";
+import api from "@/utils/api";
 // import { Icon, IconDefinition, IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface Props {
@@ -19,6 +22,7 @@ interface Props {
 }
 
 export default function Menu({ activeKey }: Props) {
+	const router = useRouter();
 	const getItemColor = (key: "scale" | "perfil" | "help" | "logout") => {
 		return activeKey === key ? "bg-tertiary" : "";
 	};
@@ -29,24 +33,50 @@ export default function Menu({ activeKey }: Props) {
 		text: string,
 		key: "scale" | "perfil" | "help" | "logout",
 		route: "/scale" | "/perfil" | "/help" | "/logout",
-	) => (
-		<Link href={route}>
-			<ListItem className={`w-full p-0 ${getItemColor(key)}`}>
-				<ListItemButton>
-					<ListItemIcon className="w-2">
-						<FontAwesomeIcon
-							size="1x"
-							color="#FFF"
-							icon={icon}
-							className="w-7 pl-2"
-						/>
-					</ListItemIcon>
-					<ListItemText primary={text} />
-				</ListItemButton>
-			</ListItem>
-		</Link>
-	);
+	) => {
+		if (route === "/logout") {
+			return (
+				<ListItem
+					className={`w-full p-0 ${getItemColor(key)}`}
+					onClick={() => {
+						api.post("/user/logout").then(() => {
+							nookies.destroy(null, "token");
+							router.replace("/signin");
+						});
+					}}>
+					<ListItemButton>
+						<ListItemIcon className="w-2">
+							<FontAwesomeIcon
+								size="1x"
+								color="#FFF"
+								icon={icon}
+								className="w-7 pl-2"
+							/>
+						</ListItemIcon>
+						<ListItemText primary={text} />
+					</ListItemButton>
+				</ListItem>
+			);
+		}
 
+		return (
+			<Link href={route}>
+				<ListItem className={`w-full p-0 ${getItemColor(key)}`}>
+					<ListItemButton>
+						<ListItemIcon className="w-2">
+							<FontAwesomeIcon
+								size="1x"
+								color="#FFF"
+								icon={icon}
+								className="w-7 pl-2"
+							/>
+						</ListItemIcon>
+						<ListItemText primary={text} />
+					</ListItemButton>
+				</ListItem>
+			</Link>
+		);
+	};
 	return (
 		<Box className="justify-top flex h-screen w-1.5/10 flex-col items-center bg-secondary text-primary">
 			<Image
