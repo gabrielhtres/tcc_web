@@ -23,7 +23,7 @@ export default function Layout({
 			<Box className="flex h-screen w-8.5/10 flex-col">
 				<Header title={headerTitle} />
 				<Box className="h-full overflow-y-hidden bg-gray-300 p-2">
-					<Box className="max-h-full overflow-y-scroll bg-gray-100 p-8 shadow-md">
+					<Box className="max-h-full min-h-full overflow-y-auto bg-gray-100 p-8 shadow-md">
 						<p className="mb-4 font-semibold">{title}</p>
 						{children}
 					</Box>

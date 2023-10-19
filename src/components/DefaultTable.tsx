@@ -29,7 +29,7 @@ interface DefaultDataType {
 interface Props {
 	data: DefaultDataType[];
 	route: string;
-	appRoute: string;
+	appRoute?: string;
 	listRoute?: string;
 	resetData: () => void;
 }
@@ -134,7 +134,7 @@ export default function DefaultTable({
 	};
 
 	const handleViewEdit = (id: number, edit?: boolean) => {
-		router.push(`${appRoute}/${edit ? "edit" : "detail"}/${id}`);
+		router.push(`${appRoute || route}/${edit ? "edit" : "detail"}/${id}`);
 		return;
 	};
 
