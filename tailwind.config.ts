@@ -15,6 +15,7 @@ const config: Config = {
 			},
 			textColor: {
 				primary: "#FFF",
+				slider: "#219653",
 			},
 			backgroundImage: {
 				"gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

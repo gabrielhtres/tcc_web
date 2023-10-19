@@ -11,6 +11,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import Image from "next/image";
 import Logo from "../assets/logo.svg";
+import Link from "next/link";
 // import { Icon, IconDefinition, IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface Props {
@@ -27,20 +28,23 @@ export default function Menu({ activeKey }: Props) {
 		icon: any,
 		text: string,
 		key: "scale" | "perfil" | "help" | "logout",
+		route: "/scale" | "/perfil" | "/help" | "/logout",
 	) => (
-		<ListItem className={`w-full p-0 ${getItemColor(key)}`}>
-			<ListItemButton>
-				<ListItemIcon className="w-2">
-					<FontAwesomeIcon
-						size="1x"
-						color="#FFF"
-						icon={icon}
-						className="w-7 pl-2"
-					/>
-				</ListItemIcon>
-				<ListItemText primary={text} />
-			</ListItemButton>
-		</ListItem>
+		<Link href={route}>
+			<ListItem className={`w-full p-0 ${getItemColor(key)}`}>
+				<ListItemButton>
+					<ListItemIcon className="w-2">
+						<FontAwesomeIcon
+							size="1x"
+							color="#FFF"
+							icon={icon}
+							className="w-7 pl-2"
+						/>
+					</ListItemIcon>
+					<ListItemText primary={text} />
+				</ListItemButton>
+			</ListItem>
+		</Link>
 	);
 
 	return (
@@ -51,10 +55,20 @@ export default function Menu({ activeKey }: Props) {
 				className="w-full p-4"
 			/>
 			<List className="w-full p-0">
-				{CustomListItem(faChartGantt, "Escala", "scale")}
-				{CustomListItem(faUserAlt, "Meu Perfil", "perfil")}
-				{CustomListItem(faQuestionCircle, "Suporte e Ajuda", "help")}
-				{CustomListItem(faArrowRightFromBracket, "Sair", "logout")}
+				{CustomListItem(faChartGantt, "Escala", "scale", "/scale")}
+				{CustomListItem(faUserAlt, "Meu Perfil", "perfil", "/perfil")}
+				{CustomListItem(
+					faQuestionCircle,
+					"Suporte e Ajuda",
+					"help",
+					"/help",
+				)}
+				{CustomListItem(
+					faArrowRightFromBracket,
+					"Sair",
+					"logout",
+					"/logout",
+				)}
 			</List>
 		</Box>
 	);

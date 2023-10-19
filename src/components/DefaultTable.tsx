@@ -1,6 +1,7 @@
 "use client";
 
-import { faEye, faList } from "@fortawesome/free-solid-svg-icons";
+import api from "@/utils/api";
+import { faEye, faInbox, faList } from "@fortawesome/free-solid-svg-icons";
 // import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
 // import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
 // import { faBackwardStep } from "@fortawesome/free-solid-svg-icons/faBackwardStep";
@@ -18,8 +19,20 @@ import {
 	TableHead,
 	TableRow,
 } from "@mui/material";
-// import { useState } from "react";
-// import Header from "./Header";
+import { useRouter } from "next/navigation";
+
+interface DefaultDataType {
+	id: number;
+	name: string;
+}
+
+interface Props {
+	data: DefaultDataType[];
+	route: string;
+	appRoute: string;
+	listRoute?: string;
+	resetData: () => void;
+}
 
 // interface TablePaginationActionsProps {
 //   count: number;
@@ -87,14 +100,16 @@ import {
 // 	);
 // }
 
-export default function DefaultTable() {
+export default function DefaultTable({
+	data,
+	route,
+	listRoute,
+	appRoute,
+	resetData,
+}: Props) {
+	const router = useRouter();
 	// const [page, setPage] = useState(0);
 	// const [rowsPerPage, setRowsPerPage] = useState(5);
-
-	const rows = [
-		{ id: 1, name: "Escala 1" },
-		{ id: 2, name: "Escala 2" },
-	];
 
 	// Avoid a layout jump when reaching the last page with empty rows.
 	// const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -113,7 +128,24 @@ export default function DefaultTable() {
 	// 	setPage(0);
 	// };
 
-	return (
+	const handleList = (id: number) => {
+		if (listRoute) router.push(`${listRoute}/${id}`);
+		return;
+	};
+
+	const handleViewEdit = (id: number, edit?: boolean) => {
+		router.push(`${appRoute}/${edit ? "edit" : "detail"}/${id}`);
+		return;
+	};
+
+	const handleDelete = (id: number) => {
+		api.delete(`${route}/${id}`).then(res => {
+			console.log(res.data);
+			resetData();
+		});
+	};
+
+	return data.length > 0 ? (
 		// <Box className="w-full bg-gray-200">
 		// 	<Box className="flex justify-center items-center p-8 w-full bg-opacity-30">
 		<TableContainer className="rounded-lg bg-white">
@@ -129,20 +161,25 @@ export default function DefaultTable() {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{rows.map(row => (
+					{data.map(row => (
 						<TableRow key={row.id}>
 							<TableCell size="small">{row.name}</TableCell>
 							<TableCell size="small">
 								<Box className="flex w-full justify-around">
-									<IconButton>
-										<FontAwesomeIcon
-											className="w-5"
-											// size="sm"
-											color="#3CB371"
-											icon={faList}
-										/>
-									</IconButton>
-									<IconButton>
+									{listRoute && (
+										<IconButton
+											onClick={() => handleList(row.id)}>
+											<FontAwesomeIcon
+												className="w-5"
+												// size="sm"
+												color="#3CB371"
+												icon={faList}
+											/>
+										</IconButton>
+									)}
+
+									<IconButton
+										onClick={() => handleViewEdit(row.id)}>
 										<FontAwesomeIcon
 											className="w-5"
 											// size="sm"
@@ -150,7 +187,10 @@ export default function DefaultTable() {
 											icon={faEye}
 										/>
 									</IconButton>
-									<IconButton>
+									<IconButton
+										onClick={() =>
+											handleViewEdit(row.id, true)
+										}>
 										<FontAwesomeIcon
 											className="w-5"
 											// size="sm"
@@ -158,7 +198,8 @@ export default function DefaultTable() {
 											icon={faEdit}
 										/>
 									</IconButton>
-									<IconButton>
+									<IconButton
+										onClick={() => handleDelete(row.id)}>
 										<FontAwesomeIcon
 											className="w-4"
 											// size="sm"
@@ -193,7 +234,15 @@ export default function DefaultTable() {
 						</TableFooter> */}
 			</Table>
 		</TableContainer>
+	) : (
 		// 	</Box>
 		// </Box>
+		<Box className="flex h-full w-full flex-col items-center justify-center pb-20">
+			<FontAwesomeIcon
+				icon={faInbox}
+				size="6x"
+			/>
+			<p>Não há dados cadastrados</p>
+		</Box>
 	);
 }

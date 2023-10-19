@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
+import nookies from "nookies";
 
 export default function SignIn() {
 	const cpfInputRef = useRef<HTMLInputElement>(null);
@@ -27,7 +28,14 @@ export default function SignIn() {
 			password,
 		})
 			.then(res => {
-				router.replace(`/scale/${res.data.id}`);
+				// console.log("token data", res.data.token);
+				nookies.set(null, "token", res.data.token, {
+					path: "/",
+					maxAge: 1800,
+				});
+				// const tokenLocal = localStorage.getItem("token");
+				// console.log("token local", tokenLocal);
+				router.replace("/scale");
 			})
 			.catch(err => {
 				console.log(err);

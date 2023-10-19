@@ -3,13 +3,13 @@
 import DefaultFABSaveIcon from "@/components/DefaultFABSaveIcon";
 import Layout from "@/components/Layout";
 import api from "@/utils/api";
-import { TextField } from "@mui/material";
+import { Slider, TextField } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
-interface Scale {
+interface ScalePart {
 	name: string;
-	description: string;
+	percentage: number;
 }
 
 interface Props {
@@ -20,49 +20,48 @@ interface Props {
 export default function DefaultLayout({ title, isView }: Props) {
 	const router = useRouter();
 	const params = useParams();
-	const { scaleId } = params;
-	const [formDataValues, setFormDataValues] = useState<Scale>({
+	const { scaleId, scalePartId } = params;
+
+	const [formDataValues, setFormDataValues] = useState<ScalePart>({
 		name: "",
-		description: "",
+		percentage: 0,
 	});
 
 	useEffect(() => {
-		if (scaleId) {
-			api.get(`/scale/${scaleId}`).then(res => {
+		if (scalePartId) {
+			api.get(`/scale/part/${scalePartId}`).then(res => {
 				console.log("res", res.data);
-				const { name, description } = res.data;
+				const { name, percentage } = res.data;
 				setFormDataValues({
 					name,
-					description,
+					percentage: Number(percentage),
 				});
 			});
 		}
-	}, [scaleId]);
+	}, [scalePartId]);
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		const formData = new FormData(event.currentTarget);
 
-		console.log("formData", formData);
-
 		const formValues: Record<string, FormDataEntryValue> = {};
 
 		formData.forEach((value, key) => (formValues[key] = value));
 
-		console.log(formData, formValues);
+		console.log("fd e fv", formData, formValues, typeof scalePartId);
 
-		if (scaleId) {
-			api.put(`/scale/${scaleId}`, formValues).then(res => {
+		if (scalePartId) {
+			api.put(`/scale/part/${scalePartId}`, formValues).then(res => {
 				console.log(res.data);
-				router.replace("/scale");
+				router.replace(`/scale-part/${scaleId}`);
 			});
 			return;
 		}
 
-		api.post("/scale", formValues).then(res => {
+		api.post(`/scale/part/${scaleId}`, formValues).then(res => {
 			console.log(res.data);
-			router.replace("/scale");
+			router.replace(`/scale-part/${scaleId}`);
 		});
 	};
 
@@ -94,7 +93,7 @@ export default function DefaultLayout({ title, isView }: Props) {
 						})
 					}
 				/>
-				<TextField
+				{/* <TextField
 					name="description"
 					label="Descrição"
 					variant="outlined"
@@ -111,21 +110,26 @@ export default function DefaultLayout({ title, isView }: Props) {
 							description: e.target.value,
 						})
 					}
-				/>
-				{/* <Slider
-					name="slider"
-					defaultValue={0}
+				/> */}
+				<Slider
+					name="percentage"
+					onChange={(_, value) => {
+						setFormDataValues({
+							...formDataValues,
+							percentage: Number(value),
+						});
+					}}
 					aria-label="Default"
 					valueLabelDisplay="on"
 					disabled={isView}
 					className="mb-10 w-8/10 text-slider"
-					value={scale?.percentage}
-				/> */}
+					value={formDataValues?.percentage}
+				/>
 				{!isView && (
 					<>
 						<DefaultFABSaveIcon
 							type="submit"
-							routeRedirect="/scale"
+							routeRedirect={`/scale-part/${scaleId}`}
 						/>
 					</>
 				)}

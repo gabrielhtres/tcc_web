@@ -3,26 +3,25 @@
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Fab } from "@mui/material";
-import { useRouter } from "next/navigation";
 
 interface Props {
-	handleSave: () => void;
+	// handleSave: () => void;
 	routeRedirect: string;
+	type: "submit" | "button";
 }
 
 export default function DefaultFABSaveIcon({
-	routeRedirect,
-	handleSave,
+	// routeRedirect,
+	type = "submit", // handleSave,
 }: Props) {
-	const router = useRouter();
-
 	return (
 		<Fab
-			onClick={() => {
-				handleSave();
-				router.replace(routeRedirect);
-			}}
-			className="absolute bottom-0 right-0 mb-10 mr-10 flex items-center justify-center bg-primary hover:bg-secondary"
+			// onClick={() => {
+			// 	handleSave();
+			// 	// router.replace(routeRedirect);
+			// }}
+			type={type}
+			className="absolute bottom-0 right-0 mb-7 mr-8 flex items-center justify-center bg-primary hover:bg-secondary"
 			aria-label="add">
 			<FontAwesomeIcon
 				size="1x"

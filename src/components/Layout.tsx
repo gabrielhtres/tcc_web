@@ -20,11 +20,13 @@ export default function Layout({
 	return (
 		<main className="flex min-h-screen min-w-max">
 			<Menu activeKey={menuActiveKey} />
-			<Box className="flex w-8.5/10 flex-col">
+			<Box className="flex h-screen w-8.5/10 flex-col">
 				<Header title={headerTitle} />
-				<Box className="h-9.3/10 min-h-9.3/10 bg-gray-200 p-8">
-					<p className="mb-4 font-semibold">{title}</p>
-					{children}
+				<Box className="h-full overflow-y-hidden bg-gray-300 p-2">
+					<Box className="max-h-full overflow-y-scroll bg-gray-100 p-8 shadow-md">
+						<p className="mb-4 font-semibold">{title}</p>
+						{children}
+					</Box>
 				</Box>
 			</Box>
 			{/* <Box className="absolute w-8.5/10 h-8.5/10 h-full">

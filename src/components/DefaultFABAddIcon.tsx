@@ -15,7 +15,7 @@ export default function DefaultFABAddIcon({ routeAdd }: Props) {
 	return (
 		<Fab
 			onClick={() => router.push(routeAdd)}
-			className="absolute bottom-0 right-0 mb-10 mr-10 flex items-center justify-center bg-primary hover:bg-secondary"
+			className="absolute bottom-0 right-0 mb-7 mr-8 flex items-center justify-center bg-primary hover:bg-secondary"
 			aria-label="add">
 			<FontAwesomeIcon
 				size="1x"
