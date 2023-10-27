@@ -17,7 +17,18 @@ api.interceptors.request.use(
 	async config => {
 		const token = nookies.get(null).token;
 
-		config.headers["Content-Type"] = "application/json";
+		console.log(config.url);
+
+		if (
+			(config.url?.includes("/scale/part") ||
+				config.url?.includes("/upload-image")) &&
+			(config.method === "post" || config.method === "put")
+		) {
+			console.log("entrou no if");
+			config.headers["Content-Type"] = "multipart/form-data";
+		} else {
+			config.headers["Content-Type"] = "application/json";
+		}
 
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`;

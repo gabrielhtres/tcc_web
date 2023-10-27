@@ -4,12 +4,14 @@ import DefaultFABSaveIcon from "@/components/DefaultFABSaveIcon";
 import Layout from "@/components/Layout";
 import api from "@/utils/api";
 import { Slider, TextField } from "@mui/material";
+import { MuiFileInput } from "mui-file-input";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 interface ScalePart {
 	name: string;
 	percentage: number;
+	image: File | null;
 }
 
 interface Props {
@@ -25,16 +27,18 @@ export default function DefaultLayout({ title, isView }: Props) {
 	const [formDataValues, setFormDataValues] = useState<ScalePart>({
 		name: "",
 		percentage: 0,
+		image: null,
 	});
 
 	useEffect(() => {
 		if (scalePartId) {
 			api.get(`/scale/part/${scalePartId}`).then(res => {
 				console.log("res", res.data);
-				const { name, percentage } = res.data;
+				const { name, percentage, image } = res.data;
 				setFormDataValues({
 					name,
 					percentage: Number(percentage),
+					image,
 				});
 			});
 		}
@@ -45,24 +49,32 @@ export default function DefaultLayout({ title, isView }: Props) {
 
 		const formData = new FormData(event.currentTarget);
 
-		const formValues: Record<string, FormDataEntryValue> = {};
+		formData.append("percentage", String(formDataValues.percentage));
+		formData.append("name", formDataValues.name);
+		formData.append("image", formDataValues.image as File);
 
-		formData.forEach((value, key) => (formValues[key] = value));
+		// const formValues: Record<string, FormDataEntryValue> = {};
 
-		console.log("fd e fv", formData, formValues, typeof scalePartId);
+		// formData.forEach((value, key) => (formValues[key] = value));
+
+		console.log("fd e fv", formData, /*formValues, */ typeof scalePartId);
 
 		if (scalePartId) {
-			api.put(`/scale/part/${scalePartId}`, formValues).then(res => {
+			api.put(`/scale/part/${scalePartId}`, formData).then(res => {
 				console.log(res.data);
 				router.replace(`/scale-part/${scaleId}`);
 			});
 			return;
 		}
 
-		api.post(`/scale/part/${scaleId}`, formValues).then(res => {
+		api.post(`/scale/part/${scaleId}`, formData).then(res => {
 			console.log(res.data);
 			router.replace(`/scale-part/${scaleId}`);
 		});
+
+		// api.post("/upload-image", { image: formDataValues.image }).then(res => {
+		// 	console.log(res);
+		// });
 	};
 
 	return (
@@ -77,6 +89,7 @@ export default function DefaultLayout({ title, isView }: Props) {
 			) : ( */}
 			<form
 				className="mt-10 flex flex-col items-center"
+				encType="multipart/form-data"
 				onSubmit={handleSubmit}>
 				<TextField
 					name="name"
@@ -93,24 +106,6 @@ export default function DefaultLayout({ title, isView }: Props) {
 						})
 					}
 				/>
-				{/* <TextField
-					name="description"
-					label="Descrição"
-					variant="outlined"
-					color="success"
-					disabled={isView}
-					multiline
-					minRows={5}
-					maxRows={5}
-					className="mb-10 w-8/10"
-					value={formDataValues.description}
-					onChange={e =>
-						setFormDataValues({
-							...formDataValues,
-							description: e.target.value,
-						})
-					}
-				/> */}
 				<Slider
 					name="percentage"
 					onChange={(_, value) => {
@@ -124,6 +119,22 @@ export default function DefaultLayout({ title, isView }: Props) {
 					disabled={isView}
 					className="mb-10 w-8/10 text-slider"
 					value={formDataValues?.percentage}
+				/>
+				{/* <input
+					type="file"
+					name="image"
+				/> */}
+				<MuiFileInput
+					itemType="file"
+					className="mb-10 w-8/10"
+					value={formDataValues.image}
+					onChange={newValue =>
+						setFormDataValues({
+							...formDataValues,
+							image: newValue,
+						})
+					}
+					name="image"
 				/>
 				{!isView && (
 					<>
