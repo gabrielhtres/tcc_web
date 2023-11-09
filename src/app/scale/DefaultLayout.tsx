@@ -29,7 +29,7 @@ export default function DefaultLayout({ title, isView }: Props) {
 	useEffect(() => {
 		if (scaleId) {
 			api.get(`/scale/${scaleId}`).then(res => {
-				console.log("res", res.data);
+				// console.log("res", res.data);
 				const { name, description } = res.data;
 				setFormDataValues({
 					name,
@@ -44,24 +44,24 @@ export default function DefaultLayout({ title, isView }: Props) {
 
 		const formData = new FormData(event.currentTarget);
 
-		console.log("formData", formData);
+		// console.log("formData", formData);
 
 		const formValues: Record<string, FormDataEntryValue> = {};
 
 		formData.forEach((value, key) => (formValues[key] = value));
 
-		console.log(formData, formValues);
+		// console.log(formData, formValues);
 
 		if (scaleId) {
 			api.put(`/scale/${scaleId}`, formValues).then(res => {
-				console.log(res.data);
+				// console.log(res.data);
 				router.replace("/scale");
 			});
 			return;
 		}
 
 		api.post("/scale", formValues).then(res => {
-			console.log(res.data);
+			// console.log(res.data);
 			router.replace("/scale");
 		});
 	};

@@ -33,7 +33,7 @@ export default function DefaultLayout({ title, isView }: Props) {
 	useEffect(() => {
 		if (scalePartId) {
 			api.get(`/scale/part/${scalePartId}`).then(res => {
-				console.log("res", res.data);
+				// console.log("res", res.data);
 				const { name, percentage, image } = res.data;
 				setFormDataValues({
 					name,
@@ -57,18 +57,18 @@ export default function DefaultLayout({ title, isView }: Props) {
 
 		// formData.forEach((value, key) => (formValues[key] = value));
 
-		console.log("fd e fv", formData, /*formValues, */ typeof scalePartId);
+		// console.log("fd e fv", formData, /*formValues, */ typeof scalePartId);
 
 		if (scalePartId) {
 			api.put(`/scale/part/${scalePartId}`, formData).then(res => {
-				console.log(res.data);
+				// console.log(res.data);
 				router.replace(`/scale-part/${scaleId}`);
 			});
 			return;
 		}
 
 		api.post(`/scale/part/${scaleId}`, formData).then(res => {
-			console.log(res.data);
+			// console.log(res.data);
 			router.replace(`/scale-part/${scaleId}`);
 		});
 

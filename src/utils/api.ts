@@ -2,7 +2,7 @@ import axios from "axios";
 import nookies from "nookies";
 
 const token = nookies.get(null).token;
-console.log(token);
+// console.log(token);
 
 const api = axios.create({
 	baseURL: "http://localhost:3030",
@@ -17,14 +17,14 @@ api.interceptors.request.use(
 	async config => {
 		const token = nookies.get(null).token;
 
-		console.log(config.url);
+		// console.log(config.url);
 
 		if (
 			(config.url?.includes("/scale/part") ||
 				config.url?.includes("/upload-image")) &&
 			(config.method === "post" || config.method === "put")
 		) {
-			console.log("entrou no if");
+			// console.log("entrou no if");
 			config.headers["Content-Type"] = "multipart/form-data";
 		} else {
 			config.headers["Content-Type"] = "application/json";
