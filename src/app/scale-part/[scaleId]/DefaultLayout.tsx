@@ -29,16 +29,23 @@ export default function DefaultLayout({ title, isView }: Props) {
 		percentage: 0,
 		image: null,
 	});
+	const [image, setImage] = useState<File | null>(null);
 
 	useEffect(() => {
 		if (scalePartId) {
 			api.get(`/scale/part/${scalePartId}`).then(res => {
 				// console.log("res", res.data);
 				const { name, percentage, image } = res.data;
+
 				setFormDataValues({
 					name,
 					percentage: Number(percentage),
 					image,
+				});
+
+				api.get(`/file/${image}`).then(res => {
+					// console.log(res);
+					setImage(new File([res.data], `${image}`));
 				});
 			});
 		}
@@ -57,8 +64,6 @@ export default function DefaultLayout({ title, isView }: Props) {
 
 		// formData.forEach((value, key) => (formValues[key] = value));
 
-		// console.log("fd e fv", formData, /*formValues, */ typeof scalePartId);
-
 		if (scalePartId) {
 			api.put(`/scale/part/${scalePartId}`, formData).then(res => {
 				// console.log(res.data);
@@ -71,10 +76,6 @@ export default function DefaultLayout({ title, isView }: Props) {
 			// console.log(res.data);
 			router.replace(`/scale-part/${scaleId}`);
 		});
-
-		// api.post("/upload-image", { image: formDataValues.image }).then(res => {
-		// 	console.log(res);
-		// });
 	};
 
 	return (
@@ -82,11 +83,6 @@ export default function DefaultLayout({ title, isView }: Props) {
 			title={title}
 			headerTitle="Escalas"
 			menuActiveKey="scale">
-			{/* {loading ? (
-				<>
-					<Loader />
-				</>
-			) : ( */}
 			<form
 				className="mt-10 flex flex-col items-center"
 				encType="multipart/form-data"
@@ -119,23 +115,33 @@ export default function DefaultLayout({ title, isView }: Props) {
 					disabled={isView}
 					className="mb-10 w-8/10 text-slider"
 					value={formDataValues?.percentage}
+					step={0.1}
 				/>
-				{/* <input
-					type="file"
-					name="image"
-				/> */}
 				<MuiFileInput
 					itemType="file"
+					disabled={isView}
 					className="mb-10 w-8/10"
-					value={formDataValues.image}
-					onChange={newValue =>
+					value={image}
+					onChange={newValue => {
 						setFormDataValues({
 							...formDataValues,
 							image: newValue,
-						})
-					}
+						});
+						setImage(newValue);
+					}}
 					name="image"
 				/>
+				{image && (
+					<div
+						className="mb-10 w-8/10"
+						style={{
+							minHeight: 200,
+							backgroundImage: `url(http://localhost:3030/file/${formDataValues.image})`,
+							backgroundRepeat: "no-repeat",
+							backgroundSize: "contain",
+						}}
+					/>
+				)}
 				{!isView && (
 					<>
 						<DefaultFABSaveIcon
