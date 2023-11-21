@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 interface ScalePart {
 	name: string;
 	percentage: number;
-	image: File | null;
+	image: string;
 }
 
 interface Props {
@@ -27,25 +27,27 @@ export default function DefaultLayout({ title, isView }: Props) {
 	const [formDataValues, setFormDataValues] = useState<ScalePart>({
 		name: "",
 		percentage: 0,
-		image: null,
+		image: "",
 	});
 	const [image, setImage] = useState<File | null>(null);
 
 	useEffect(() => {
 		if (scalePartId) {
 			api.get(`/scale/part/${scalePartId}`).then(res => {
-				// console.log("res", res.data);
 				const { name, percentage, image } = res.data;
+
+				console.log("res", res.data);
+
+				if (image) {
+					api.get(`/file/${image}`).then(res => {
+						setImage(new File([res.data], `${image}`));
+					});
+				}
 
 				setFormDataValues({
 					name,
 					percentage: Number(percentage),
 					image,
-				});
-
-				api.get(`/file/${image}`).then(res => {
-					// console.log(res);
-					setImage(new File([res.data], `${image}`));
 				});
 			});
 		}
@@ -54,27 +56,40 @@ export default function DefaultLayout({ title, isView }: Props) {
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		const formData = new FormData(event.currentTarget);
-
-		formData.append("percentage", String(formDataValues.percentage));
-		formData.append("name", formDataValues.name);
-		formData.append("image", formDataValues.image as File);
-
-		// const formValues: Record<string, FormDataEntryValue> = {};
-
-		// formData.forEach((value, key) => (formValues[key] = value));
+		const valuesToSend = {
+			...formDataValues,
+			percentage: String(formDataValues.percentage),
+		};
 
 		if (scalePartId) {
-			api.put(`/scale/part/${scalePartId}`, formData).then(res => {
-				// console.log(res.data);
+			api.put(`/scale/part/${scalePartId}`, valuesToSend).then(() => {
 				router.replace(`/scale-part/${scaleId}`);
 			});
 			return;
 		}
 
-		api.post(`/scale/part/${scaleId}`, formData).then(res => {
-			// console.log(res.data);
+		api.post(`/scale/part/${scaleId}`, valuesToSend).then(() => {
 			router.replace(`/scale-part/${scaleId}`);
+		});
+	};
+
+	const handleSaveImage = async (file: File | null) => {
+		if (!file) return;
+
+		const formData = new FormData();
+
+		formData.append("image", file);
+
+		api.post("/file", formData).then(res => {
+			const { filename } = res.data;
+			setFormDataValues({
+				...formDataValues,
+				image: filename,
+			});
+
+			api.get(`/file/${filename}`).then(res => {
+				setImage(new File([res.data], `${filename}`));
+			});
 		});
 	};
 
@@ -123,11 +138,12 @@ export default function DefaultLayout({ title, isView }: Props) {
 					className="mb-10 w-8/10"
 					value={image}
 					onChange={newValue => {
-						setFormDataValues({
-							...formDataValues,
-							image: newValue,
-						});
-						setImage(newValue);
+						handleSaveImage(newValue);
+						// setFormDataValues({
+						// 	...formDataValues,
+						// 	image: newValue,
+						// });
+						// setImage(newValue);
 					}}
 					name="image"
 				/>
