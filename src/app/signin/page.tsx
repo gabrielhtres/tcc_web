@@ -28,13 +28,15 @@ export default function SignIn() {
 			password,
 		})
 			.then(res => {
-				// console.log("token data", res.data.token);
 				nookies.set(null, "token", res.data.token, {
 					path: "/",
 					maxAge: 1800,
 				});
-				// const tokenLocal = localStorage.getItem("token");
-				// console.log("token local", tokenLocal);
+
+				nookies.set(null, "refreshToken", res.data.refreshToken, {
+					path: "/",
+					maxAge: 1800,
+				});
 				router.replace("/scale");
 			})
 			.catch(err => {
