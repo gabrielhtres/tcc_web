@@ -145,7 +145,7 @@ export default function DefaultTable({
 		});
 	};
 
-	return data.length > 0 ? (
+	return data && data.length > 0 ? (
 		// <Box className="w-full bg-gray-200">
 		// 	<Box className="flex justify-center items-center p-8 w-full bg-opacity-30">
 		<TableContainer className="rounded-lg bg-white">

@@ -29,7 +29,6 @@ export default function DefaultLayout({ title, isView }: Props) {
 	useEffect(() => {
 		if (scaleId) {
 			api.get(`/scale/${scaleId}`).then(res => {
-				// console.log("res", res.data);
 				const { name, description } = res.data;
 				setFormDataValues({
 					name,

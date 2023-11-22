@@ -22,5 +22,5 @@ export function middleware(req: NextRequest) {
 // See "Matching Paths" below to learn more
 export const config = {
 	// matcher: "/scale/:path*",
-	matcher: ["/signin", "/scale/:path*"],
+	matcher: ["/signin", "/scale/:path*", "/scale-part/:path*"],
 };

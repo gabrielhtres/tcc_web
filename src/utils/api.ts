@@ -47,28 +47,33 @@ api.interceptors.response.use(
 		}
 
 		if (error.response.status && error.response.status === 401) {
-			const res = await api.post("/user/refresh", undefined, {
-				headers: {
-					Authorization: `Bearer ${refreshToken}`,
-				},
-			});
+			// const res = await api.post("/user/refresh", undefined, {
+			// 	headers: {
+			// 		Authorization: `Bearer ${refreshToken}`,
+			// 	},
+			// });
 
-			if (res.data.token && res.data.refreshToken) {
-				nookies.set(null, "token", res.data.token, {
-					path: "/",
-					maxAge: 1800,
-				});
+			// if (res.data.token && res.data.refreshToken) {
+			// 	nookies.set(null, "token", res.data.token, {
+			// 		path: "/",
+			// 		maxAge: 1800,
+			// 	});
 
-				nookies.set(null, "refreshToken", res.data.refreshToken, {
-					path: "/",
-					maxAge: 1800,
-				});
+			// 	nookies.set(null, "refreshToken", res.data.refreshToken, {
+			// 		path: "/",
+			// 		maxAge: 1800,
+			// 	});
 
-				return api.request(error.config);
-			}
+			// 	return api.request(error.config);
+			// }
+
+			nookies.destroy(null, "token");
+			nookies.destroy(null, "refreshToken");
 
 			return Promise.resolve(error);
 		}
+
+		return Promise.resolve();
 	},
 );
 

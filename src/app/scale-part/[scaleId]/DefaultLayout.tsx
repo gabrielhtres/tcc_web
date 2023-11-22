@@ -36,8 +36,6 @@ export default function DefaultLayout({ title, isView }: Props) {
 			api.get(`/scale/part/${scalePartId}`).then(res => {
 				const { name, percentage, image } = res.data;
 
-				console.log("res", res.data);
-
 				if (image) {
 					api.get(`/file/${image}`).then(res => {
 						setImage(new File([res.data], `${image}`));
