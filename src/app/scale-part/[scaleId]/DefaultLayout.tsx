@@ -131,7 +131,8 @@ export default function DefaultLayout({ title, isView }: Props) {
 					step={0.1}
 				/>
 				<MuiFileInput
-					itemType="file"
+					// itemType="image"
+					inputProps={{ accept: ".png, .jpeg" }}
 					disabled={isView}
 					className="mb-10 w-8/10"
 					value={image}
